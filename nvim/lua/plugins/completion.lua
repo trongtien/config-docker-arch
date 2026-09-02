@@ -4,7 +4,11 @@ return {
 		dependencies = { "rafamadriz/friendly-snippets" },
 		version = "1.*",
 		opts = {
-			keymap = { preset = "default" },
+			keymap = {
+				preset = "default",
+				-- Enter de accept item dang chon, khong co menu thi xuong dong binh thuong
+				["<CR>"] = { "accept", "fallback" },
+			},
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
 			},

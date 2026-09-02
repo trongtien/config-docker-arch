@@ -49,3 +49,10 @@ key_map.set("n", "<leader>tD", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>
 key_map.set("n", "<leader>ts", "<Cmd>Trouble symbols toggle<CR>")
 key_map.set("n", "<leader>tq", "<Cmd>Trouble qflist toggle<CR>")
 
+-- Telescope
+vim.keymap.set("n", "<leader>sf", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
+vim.keymap.set("n", "<leader>sw", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+vim.keymap.set("n", "<leader>sc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor" })
+vim.keymap.set("n", "<leader>sg", "<cmd>Telescope git_files<cr>", { desc = "Find git" })
+vim.keymap.set("n", "<leader>sh", "<cmd>Telescope help_tags<cr>", { desc = "Find git" })
+
