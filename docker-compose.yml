@@ -13,4 +13,5 @@ services:
     volumes:
       - ~/Documents:/projects
       - ./tmux:/root/.config/tmux
+      - ./nvim:/root/.config/nvim
 

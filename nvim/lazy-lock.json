@@ -1,0 +1,4 @@
+{
+  "koda.nvim": { "branch": "main", "commit": "25a5c98ca2f6bb0b69f5e2654a78f0d7c7e0721d" },
+  "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" }
+}
