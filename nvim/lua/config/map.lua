@@ -50,9 +50,25 @@ key_map.set("n", "<leader>ts", "<Cmd>Trouble symbols toggle<CR>")
 key_map.set("n", "<leader>tq", "<Cmd>Trouble qflist toggle<CR>")
 
 -- Telescope
-vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
-vim.keymap.set("n", "<leader>fw", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-vim.keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor" })
-vim.keymap.set("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Find git" })
-vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Find git" })
+key_map.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
+key_map.set("n", "<leader>fw", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+key_map.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor" })
+key_map.set("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Find git" })
+key_map.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Find git" })
+
+-- Git stuff
+local bufnr = vim.api.nvim_get_current_buf()
+local opts = {buffer = bufnr, remap = false}
+vim.keymap.set("n", "<leader>gp", function()
+    vim.cmd.Git('push')
+end, opts)
+
+-- rebase always
+vim.keymap.set("n", "<leader>P", function()
+    vim.cmd.Git({'pull',  '--rebase'})
+end, opts)
+key_map.set("n", "<leader>gs", vim.cmd.Git)
+key_map.set("n", "gu", "<cmd>diffget //2<CR>")
+key_map.set("n", "gh", "<cmd>diffget //3<CR>")
+key_map.set("n", "<leader>gp", ":Git push -u origin ", opts);
 
