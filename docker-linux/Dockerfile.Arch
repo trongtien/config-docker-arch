@@ -1,0 +1,30 @@
+FROM archlinux:latest
+
+# Install setting and package for Arch Linux
+RUN pacman -Syu --noconfirm && \
+    pacman -S --noconfirm \
+    git \
+    tmux \
+    base-devel \
+    curl \
+    wget \
+    fzf \
+    ripgrep \
+    unzip \
+    nodejs \
+    npm
+
+# Install latest neovim from github release
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
+    rm -rf /opt/nvim-linux-x86_64 /opt/nvim && \
+    tar -C /opt -xzf nvim-linux-x86_64.tar.gz && \
+    ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim && \
+    rm nvim-linux-x86_64.tar.gz
+
+# Create config folder in container with XDG standard
+RUN mkdir -p /root/.config/nvim /root/.config/tmux
+
+WORKDIR /projects
+
+# Run tmux with config file folder tmux
+CMD ["tmux", "-f", "/root/.config/tmux/tmux.conf"]

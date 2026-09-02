@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  arch:
+    container_name: arch-linux
+    build:
+      context: .
+      dockerfile: ./docker-linux/Dockerfile.Arch
+    image: archlinux:latest
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - ~/Documents:/projects
+      - ./tmux:/root/.config/tmux
+
