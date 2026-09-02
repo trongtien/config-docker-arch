@@ -9,8 +9,14 @@ return {
                     "ruff_format",
                     "ruff_organize_imports",
                 },
-                -- Use a sub-list to run only the first available formatter
-                -- javascript = { { "prettierd", "prettier" } },
+                c = { "clang-format" },
+                cpp = { "clang-format" },
+                go = { "gofmt" },
+                odin = { "odinfmt" },
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                json = { "prettier" },
+                elixir = { "mix" },
             },
             formatters = {
                 ruff_format = {
@@ -21,7 +27,7 @@ return {
             },
             format_on_save = {
                 timeout_ms = 500,
-                lsp_format = "never",
+                lsp_format = "fallback",
             },
         })
     end,
