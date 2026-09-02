@@ -27,7 +27,7 @@ key_map.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Lef
 
 -- LSP binding
 key_map.set("n", "<leader>lr", vim.lsp.buf.rename)
-key_map.set({ "n", "v" }, "<leader>f", function()
+key_map.set({ "n", "v" }, "<leader>F", function()
     -- conform lo formatter ngoai (stylua/ruff), fallback sang LSP neu ft chua config
     require("conform").format({ async = true, lsp_format = "fallback" })
 end)
@@ -50,9 +50,9 @@ key_map.set("n", "<leader>ts", "<Cmd>Trouble symbols toggle<CR>")
 key_map.set("n", "<leader>tq", "<Cmd>Trouble qflist toggle<CR>")
 
 -- Telescope
-vim.keymap.set("n", "<leader>sf", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
-vim.keymap.set("n", "<leader>sw", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-vim.keymap.set("n", "<leader>sc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor" })
-vim.keymap.set("n", "<leader>sg", "<cmd>Telescope git_files<cr>", { desc = "Find git" })
-vim.keymap.set("n", "<leader>sh", "<cmd>Telescope help_tags<cr>", { desc = "Find git" })
+vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
+vim.keymap.set("n", "<leader>fw", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+vim.keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor" })
+vim.keymap.set("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Find git" })
+vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Find git" })
 
