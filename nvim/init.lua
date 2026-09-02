@@ -1,3 +1,5 @@
-require("config.map")
 require("config.options")
+require("config.map")
 require("config.lazy")
+require("lsp")
+require("config.theme")
