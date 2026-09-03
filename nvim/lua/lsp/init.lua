@@ -1,20 +1,5 @@
-vim.lsp.config["ocamllsp"] = {
-	cmd = { "ocamllsp" },
-	filetypes = {
-		"ocaml",
-		"ocaml.interface",
-		"ocaml.menhir",
-		"ocaml.ocamllex",
-		"dune",
-		"reason",
-	},
-	root_markers = {
-		{ "dune-project", "dune-workspace" },
-		{ "*.opam", "esy.json", "package.json" },
-		".git",
-	},
-	settings = {},
-}
+require("lsp.ocaml_config")
+require("lsp.html_config")
 
 local servers = {
 	"clangd",
@@ -30,11 +15,9 @@ local servers = {
 	"ocamllsp",
 	"elixirls",
 	"basedpyright",
+	"html",
 }
 
-for _, server in pairs(servers) do
+for _, server in ipairs(servers) do
 	vim.lsp.enable(server)
 end
-
-
-
