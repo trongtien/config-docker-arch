@@ -16,9 +16,22 @@ return {
                 javascript = { "prettier" },
                 typescript = { "prettier" },
                 json = { "prettier" },
+                html = { "prettier" },
+                htmlangular = { "prettier" },
+                css = { "prettier" },
+                scss = { "prettier" },
                 elixir = { "mix" },
             },
             formatters = {
+                prettier = {
+                    -- template Angular can parser rieng cho @if / @for / *ngIf
+                    prepend_args = function(_, ctx)
+                        if vim.bo[ctx.buf].filetype == "htmlangular" then
+                            return { "--parser", "angular" }
+                        end
+                        return {}
+                    end,
+                },
                 ruff_format = {
                     command = "ruff",
                     args = { "format", "--stdin-filename", "$FILENAME", "-" },
