@@ -13,7 +13,6 @@ key_map.set("n", "<leader>pv", vim.cmd.Ex)
 key_map.set("v", "J", ":m '>+1<CR>gv=gv")
 key_map.set("v", "K", ":m '<-2<CR>gv=gv")
 
-
 -- Move file config center view editor
 key_map.set("n", "<C-d>", "<C-d>zz")
 key_map.set("n", "<C-u>", "<C-u>zz")
