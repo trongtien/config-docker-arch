@@ -6,7 +6,6 @@ return {
 		opts = {
 			keymap = {
 				preset = "default",
-				-- Enter de accept item dang chon, khong co menu thi xuong dong binh thuong
 				["<CR>"] = { "accept", "fallback" },
 			},
 			sources = {

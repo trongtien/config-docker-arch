@@ -7,8 +7,22 @@ return {
     -- (removed in 1.0). Shim both so :checkhealth stays clean and the statusline
     -- keeps working once they are gone for good.
     init = function()
+        -- express_line goi tbl_flatten moi lan build statusline (tuc la moi
+        -- keystroke, vi generator co builtin.column). `vim.iter():flatten()`
+        -- cap phat mot chuoi iterator moi lan goi, nen dung de quy thuan tay.
         vim.tbl_flatten = function(t)
-            return vim.iter(t):flatten(math.huge):totable()
+            local result = {}
+            local function flatten(list)
+                for _, v in ipairs(list) do
+                    if type(v) == "table" then
+                        flatten(v)
+                    else
+                        result[#result + 1] = v
+                    end
+                end
+            end
+            flatten(t)
+            return result
         end
 
         local type_aliases =
@@ -46,8 +60,30 @@ return {
 
         local SPACE = " "
 
-        local lsp_server = function(_, buffer)
+        -- Cac mau nay la hang so, dinh nghia MOT lan. Truoc day chung nam trong
+        -- callback statusline: `nvim_set_hl` invalidate highlight cache nen moi
+        -- lan goi la mot lan redraw ca man hinh -- diagnostics doi lien tuc luc
+        -- dang go => redraw storm. ColorScheme autocmd de mau khong bi
+        -- colorscheme (load sau plugin nay) ghi de.
+        local function define_highlights()
             vim.api.nvim_set_hl(0, "StatusLineLsp", { fg = "#ffacf0", bg = "#1e1e1e", bold = true })
+            vim.api.nvim_set_hl(0, "StatusLineDiagErr", { fg = "#ffffff", bg = "#fa1000", bold = true })
+            vim.api.nvim_set_hl(0, "StatusLineDiagWarn", { fg = "#773300", bg = "#ffac00", bold = true })
+            vim.api.nvim_set_hl(0, "StatusLineDiagInfo", { fg = "#111133", bg = "#0facf0", bold = true })
+            vim.api.nvim_set_hl(0, "StatusLineDiagHint", { fg = "#ffffff", bg = "#00b070", bold = true })
+            vim.api.nvim_set_hl(0, "StatusLineModeNormal", { fg = "#1e1e2e", bg = "#89b4fa", bold = true })
+            vim.api.nvim_set_hl(0, "StatusLineModeInsert", { fg = "#1e1e2e", bg = "#a6e3a1", bold = true })
+            vim.api.nvim_set_hl(0, "StatusLineModeVisual", { fg = "#1e1e2e", bg = "#f9e2af", bold = true })
+        end
+
+        define_highlights()
+
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            desc = "Dinh nghia lai highlight statusline sau khi doi colorscheme",
+            callback = define_highlights,
+        })
+
+        local lsp_server = function(_, buffer)
             local clients = vim.lsp.get_clients({ bufnr = buffer.bufnr })
             if next(clients) == nil then
                 return ""
@@ -60,11 +96,6 @@ return {
 
         local diagnostics = function(_, buffer)
             local counts = vim.diagnostic.count(buffer.bufnr)
-
-            vim.api.nvim_set_hl(0, "StatusLineDiagErr", { fg = "#ffffff", bg = "#fa1000", bold = true })
-            vim.api.nvim_set_hl(0, "StatusLineDiagWarn", { fg = "#773300", bg = "#ffac00", bold = true })
-            vim.api.nvim_set_hl(0, "StatusLineDiagInfo", { fg = "#111133", bg = "#0facf0", bold = true })
-            vim.api.nvim_set_hl(0, "StatusLineDiagHint", { fg = "#ffffff", bg = "#00b070", bold = true })
 
             local severity_map = {
                 { count = counts[vim.diagnostic.severity.ERROR] or 0, hl = "StatusLineDiagErr" },
@@ -97,10 +128,6 @@ return {
         end
 
         local function mode_segment_highlighted()
-            vim.api.nvim_set_hl(0, "StatusLineModeNormal", { fg = "#1e1e2e", bg = "#89b4fa", bold = true })
-            vim.api.nvim_set_hl(0, "StatusLineModeInsert", { fg = "#1e1e2e", bg = "#a6e3a1", bold = true })
-            vim.api.nvim_set_hl(0, "StatusLineModeVisual", { fg = "#1e1e2e", bg = "#f9e2af", bold = true })
-
             local mode_map = {
                 ["n"] = "N",
                 ["no"] = "N·OPERATOR",

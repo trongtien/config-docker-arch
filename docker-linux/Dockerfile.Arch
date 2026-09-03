@@ -1,6 +1,10 @@
 FROM archlinux:latest
 
 # Install setting and package for Arch Linux
+#   tree-sitter-cli + base-devel: nvim-treesitter (branch main) build parser bang CLI nay
+#   clang: clangd (LSP) + clang-format (conform)
+#   go: gopls can go toolchain, gofmt di kem
+#   elixir: formatter "mix" trong conform
 RUN pacman -Syu --noconfirm && \
     pacman -S --noconfirm \
     git \
@@ -10,9 +14,35 @@ RUN pacman -Syu --noconfirm && \
     wget \
     fzf \
     ripgrep \
+    fd \
     unzip \
     nodejs \
-    npm
+    npm \
+    tree-sitter-cli \
+    clang \
+    rust-analyzer \
+    go \
+    gopls \
+    typescript \
+    typescript-language-server \
+    yaml-language-server \
+    bash-language-server \
+    dockerfile-language-server \
+    stylua \
+    ruff \
+    elixir
+
+# Cac LSP server khong co trong repo Arch:
+#   vscode-langservers-extracted -> vscode-json-language-server (jsonls)
+#                                   vscode-html-language-server (html)
+#   basedpyright                 -> basedpyright-langserver
+#   @angular/language-server     -> ngserver (angularls)
+RUN npm install -g \
+    vscode-langservers-extracted \
+    basedpyright \
+    awk-language-server \
+    @angular/language-server \
+    prettier
 
 # Install latest neovim from github release
 RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \

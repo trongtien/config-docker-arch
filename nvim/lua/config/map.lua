@@ -2,10 +2,14 @@ local key_map = vim.keymap
 vim.g.mapleader = " "
 vim.g.maplocalleader = "  "
 
+-- Moi mapping nhieu ky tu o mode insert deu lam ky tu dau bi giu lai cho toi
+-- 'timeoutlen' ms. Vi 'jk' chi anh huong chu "j" nen con chap nhan duoc; tuyet
+-- doi khong mapping bat dau bang <leader> (= space) o mode insert -- luc do moi
+-- dau cach khi go text deu bi treo cho, cam giac nhu editor lag.
 key_map.set("i", "jk", "<Esc>")
 
--- Save file and quit mode insert
-key_map.set({ "n", "i" }, "<leader>ww", "<Esc><Cmd>w<CR>")  -- save, back to normal
+-- Save file: chi o normal mode. Dang o insert thi go "jk" roi "<leader>ww".
+key_map.set("n", "<leader>ww", "<Cmd>w<CR>")
 
 -- Show exploer config
 key_map.set("n", "<leader>pv", vim.cmd.Ex)
