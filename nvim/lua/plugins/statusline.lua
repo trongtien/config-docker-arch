@@ -1,6 +1,44 @@
 return {
     "tjdevries/express_line.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    -- express_line is unmaintained (this commit is upstream tip) and still calls
+    -- two APIs Neovim has deprecated: `vim.tbl_flatten` on every statusline
+    -- redraw (removed in 0.13) and `vim.validate{<table>}` in its setup
+    -- (removed in 1.0). Shim both so :checkhealth stays clean and the statusline
+    -- keeps working once they are gone for good.
+    init = function()
+        vim.tbl_flatten = function(t)
+            return vim.iter(t):flatten(math.huge):totable()
+        end
+
+        local type_aliases =
+            { b = "boolean", c = "callable", f = "function", n = "number", s = "string", t = "table" }
+        local function unalias(validator)
+            if type(validator) == "string" then
+                return type_aliases[validator] or validator
+            elseif type(validator) == "table" then
+                return vim.tbl_map(function(t)
+                    return type_aliases[t] or t
+                end, validator)
+            end
+            return validator
+        end
+
+        local validate = vim.validate
+        vim.validate = function(name, ...)
+            -- Only the deprecated single-table form is translated; the modern
+            -- `vim.validate(name, value, validator, ...)` form passes straight through.
+            if select("#", ...) > 0 or type(name) ~= "table" then
+                return validate(name, ...)
+            end
+            for param, spec in pairs(name) do
+                local ok, err = pcall(validate, param, spec[1], unalias(spec[2]), spec[3])
+                if not ok then
+                    error(err, 0)
+                end
+            end
+        end
+    end,
     config = function()
         local builtin = require("el.builtin")
         local extensions = require("el.extensions")
