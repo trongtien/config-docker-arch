@@ -9,4 +9,13 @@ function M.themeColor(value)
     vim.cmd.colorscheme("habamax")
 end
 
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("ThemeOverrides", { clear = true }),
+    callback = function()
+        vim.api.nvim_set_hl(0, "Visual", { bg = "#4a4f5c" })
+        vim.api.nvim_set_hl(0, "CursorLine", { bg = "#383b45" })
+    end,
+})
+
 M.themeColor("edge")
