@@ -1,5 +1,3 @@
-require("lsp.ocaml_config")
-require("lsp.html_config")
 
 local servers = {
 	"clangd",
@@ -16,8 +14,13 @@ local servers = {
 	"elixirls",
 	"basedpyright",
 	"html",
+	"angularls",
 }
 
 for _, server in ipairs(servers) do
 	vim.lsp.enable(server)
 end
+
+require("lsp.angular_config")
+require("lsp.ocaml_config")
+require("lsp.html_config")
