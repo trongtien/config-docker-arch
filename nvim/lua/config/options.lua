@@ -3,6 +3,8 @@ vim.opt.termguicolors = true
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.cursorline = true
+-- luon chua cot sign, tranh text nhay ngang khi co diagnostic
+vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
 vim.opt.errorbells = false
 vim.opt.undofile = true

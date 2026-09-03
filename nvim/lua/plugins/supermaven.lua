@@ -23,12 +23,21 @@ return {
           condition = function()
             local buf = vim.api.nvim_get_current_buf()
 
+            if not vim.api.nvim_buf_is_valid(buf) then
+              return true
+            end
+
             if vim.api.nvim_buf_line_count(buf) > 4000 then
               return true
             end
 
             local name = vim.api.nvim_buf_get_name(buf)
-            local stat = name ~= "" and vim.uv.fs_stat(name)
+            if name == "" then
+              return false
+            end
+
+            local uv = vim.uv or vim.loop
+            local stat = uv.fs_stat(name)
 
             return stat ~= nil and stat.size > 512 * 1024
           end,
