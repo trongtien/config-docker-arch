@@ -1,3 +1,12 @@
+local utils = require("utils.module_utils")
+
+-- ngserver chi huu dung khi cwd nam trong Angular/Nx workspace. Enable vo dieu kien
+-- thi no van start o moi buffer ts/html voi probe locations rong -> client chet nhung
+-- van "attached", nuot het request.
+if not utils.is_angular_project() then
+	return
+end
+
 vim.lsp.config["angularls"] = {
 	before_init = function(params, config)
 		local root_dir = config.root_dir or vim.fn.getcwd()
@@ -29,6 +38,10 @@ vim.lsp.config["angularls"] = {
 	end,
 }
 
+vim.lsp.enable("angularls")
+
+-- Tra ve thu muc chua node_modules/@angular/language-service (= probe location cua
+-- tsserver), khong phai duong dan cua chinh plugin.
 local function angular_plugin_path()
 	local exe = vim.fn.exepath("ngserver")
 
@@ -43,7 +56,7 @@ local function angular_plugin_path()
 	}
 
 	for _, dir in ipairs(candidates) do
-		if vim.uv.fs_stat(vim.fs.joinpath(dir, "package.json")) then
+		if vim.uv.fs_stat(vim.fs.joinpath(dir, "node_modules/@angular/language-service/package.json")) then
 			return vim.fs.normalize(dir)
 		end
 	end
@@ -53,9 +66,12 @@ local angular_plugin = angular_plugin_path()
 if angular_plugin then
 	vim.lsp.config["ts_ls"] = {
 		init_options = {
+			-- Plugin cua tsserver ten la "@angular/language-service". Dat "@angular/language-server"
+			-- (do la LSP binary, khong phai ts plugin) thi tsserver load nham module do, module
+			-- nay doc stdin cua tsserver -> hong protocol, moi request treo im lang.
 			plugins = {
 				{
-					name = "@angular/language-server",
+					name = "@angular/language-service",
 					location = angular_plugin,
 					languages = { "typescript", "html", "htmlangular" },
 				},

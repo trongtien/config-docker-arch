@@ -3,7 +3,6 @@ vim.opt.termguicolors = true
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.cursorline = true
--- luon chua cot sign, tranh text nhay ngang khi co diagnostic
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
 vim.opt.errorbells = false
@@ -25,14 +24,14 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.backspace = { "indent", "eol", "start" }
 
-vim.opt.listchars = {
-    space = ".",
-    tab = ">~",
-}
+-- vim.opt.listchars = {
+-- 	space = ".",
+-- 	tab = ">~",
+-- }
 
-vim.cmd [[
+vim.cmd([[
 augroup YankHighlight
   autocmd!
   autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 augroup end
-]]
+]])

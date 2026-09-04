@@ -14,7 +14,6 @@ local servers = {
 	"elixirls",
 	"basedpyright",
 	"html",
-	"angularls",
 }
 
 for _, server in ipairs(servers) do
